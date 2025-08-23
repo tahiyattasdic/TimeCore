@@ -1,15 +1,4 @@
-# Python files
-__pycache__/
-*.pyc
-
-# Django local database
-db.sqlite3
-
-# Environment files
-.env
-venv/
-env/
-
-# IDE settings
-.vscode/
-.idea/
+echo "*.pyc" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo ".env" >> .gitignore
+echo "db.sqlite3" >> .gitignore
