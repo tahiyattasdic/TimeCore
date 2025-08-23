@@ -1,0 +1,95 @@
+{% extends 'timesheet/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-header">
+    <div class="logo">
+        <div class="logo-circle">TC</div>
+    </div>
+    <div class="app-title">TimeCore</div>
+    
+    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Log Out</button>
+    </form>
+</div>
+
+<div class="dashboard-container">
+    <div class="left-panel">
+        <div class="actions">
+            <a href="{% if current_status == 'Clocked Out' %}{% url 'clock_in' %}{% else %}#{% endif %}" 
+               class="clock-btn clock-in {% if current_status == 'Clocked In' %}disabled{% endif %}">
+               Clock In
+            </a>
+            
+            <a href="{% if current_status == 'Clocked In' %}{% url 'clock_out' %}{% else %}#{% endif %}" 
+               class="clock-btn clock-out {% if current_status == 'Clocked Out' %}disabled{% endif %}">
+               Clock Out
+            </a>
+        </div>
+        <div class="timesheet-log">
+            <div class="log-header">
+                <div style="flex: 0.2;">Confirm</div>
+                <div>Date</div>
+                <div>Hours worked</div>
+            </div>
+            <div class="log-body">
+                {% for session in work_sessions %}
+                    <div class="log-row">
+                        <div class="log-cell" style="flex: 0.2;">
+                            <form action="{% url 'toggle_confirmation' session.out_punch_id %}" method="post">
+                                {% csrf_token %}
+                                <input type="checkbox" onchange="this.form.submit()" {% if session.confirmed %}checked{% endif %}>
+                            </form>
+                        </div>
+                        <div class="log-cell">{{ session.date|date:"M. d, Y" }}</div>
+                        <div class="log-cell">{{ session.hours_worked }}</div>
+                    </div>
+                {% empty %}
+                    <p style="text-align: center; padding: 1rem;">No completed work sessions to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="info-box">
+            <h3>{{ user.username }}</h3>
+            <p><strong>Employee type:</strong> Hourly Worker</p>
+        </div>
+        <div class="info-box">
+            <h3>Messages</h3>
+        </div>
+    </div>
+</div>
+
+<div id="chat-toggle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+</div>
+
+<div id="chat-widget" class="hidden">
+    <div class="chat-header">
+        <h3>TimeCore AI Assistant</h3>
+    </div>
+    <div class="chat-body">
+        <div class="message bot">Hello! How can I assist you today?</div>
+    </div>
+    <div class="chat-footer">
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWidget = document.getElementById('chat-widget');
+
+    chatToggle.addEventListener('click', function() {
+        chatWidget.classList.toggle('hidden');
+    });
+</script>
+
+{% endblock %}
