@@ -1,4 +1,40 @@
-echo "*.pyc" >> .gitignore
-echo "__pycache__/" >> .gitignore
-echo ".env" >> .gitignore
-echo "db.sqlite3" >> .gitignore
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+
+# Virtual Environment
+venv/
+env/
+*.env
+
+# Django static and media files
+staticfiles/
+media/
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+*.py,cover
+
+# Test output
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+*.test
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
