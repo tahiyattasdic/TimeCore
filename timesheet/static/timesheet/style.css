@@ -77,3 +77,35 @@ body {
 
 /* --- Form Error Styles --- */
 .errorlist { list-style-type: none; padding: 10px; margin: 0 0 1rem 0; border: 1px solid #dc3545; border-radius: 8px; background-color: #f8d7da; color: #721c24; }
+
+/* --- Chat Message Styles --- */
+
+.chat-container .message {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    max-width: 70%;
+    width: fit-content;
+}
+
+.chat-container .message.sent {
+    background-color: #007bff;
+    color: white;
+    margin-left: auto; /* Aligns to the right */
+    text-align: left;
+}
+
+.chat-container .message.received {
+    background-color: #e9ecef;
+    color: #333;
+    margin-right: auto; /* Aligns to the left */
+}
+
+.chat-container .timestamp {
+    display: block;
+    font-size: 0.75rem;
+    color: #adb5bd;
+    margin-top: 4px;
+}
+
+.message.sent .timestamp { color: #e0e0e0; }

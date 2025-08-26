@@ -9,6 +9,7 @@ urlpatterns = [
     path('clock-out/', views.clock_out, name='clock_out'),
     path('signup/', views.sign_up, name='signup'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
-    # ADD THIS NEW LINE
     path('toggle_confirmation/<int:punch_id>/', views.toggle_confirmation, name='toggle_confirmation'),
+    path('messages/', views.inbox, name='inbox'),
+    path('messages/chat/<int:recipient_id>/', views.chat_view, name='chat'),
 ]

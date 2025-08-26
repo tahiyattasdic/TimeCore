@@ -57,39 +57,11 @@
             <h3>{{ user.username }}</h3>
             <p><strong>Employee type:</strong> Hourly Worker</p>
         </div>
-        <div class="info-box">
-            <h3>Messages</h3>
-        </div>
     </div>
 </div>
 
-<div id="chat-toggle">
+<a href="{% url 'inbox' %}" id="chat-toggle" title="Messages">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-</div>
-
-<div id="chat-widget" class="hidden">
-    <div class="chat-header">
-        <h3>TimeCore AI Assistant</h3>
-    </div>
-    <div class="chat-body">
-        <div class="message bot">Hello! How can I assist you today?</div>
-    </div>
-    <div class="chat-footer">
-        <form id="chat-form">
-            <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off">
-            <button type="submit">Send</button>
-        </form>
-    </div>
-</div>
-
-
-<script>
-    const chatToggle = document.getElementById('chat-toggle');
-    const chatWidget = document.getElementById('chat-widget');
-
-    chatToggle.addEventListener('click', function() {
-        chatWidget.classList.toggle('hidden');
-    });
-</script>
+</a>
 
 {% endblock %}

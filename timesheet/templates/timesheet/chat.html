@@ -1,0 +1,30 @@
+{% extends 'timesheet/base.html' %}
+
+{% block content %}
+<div class="main-header">
+    <div class="app-title">Chat with {{ recipient.username }}</div>
+    <a href="{% url 'inbox' %}" class="logout-button" style="text-decoration: none;">Back to Inbox</a>
+</div>
+
+<div class="chat-container" style="max-width: 800px; margin: 2rem auto; display: flex; flex-direction: column; height: 70vh; border: 1px solid #ddd; border-radius: 8px; background-color: white;">
+    <div class="chat-body" style="flex-grow: 1; padding: 1rem; overflow-y: auto;">
+        {% for message in messages %}
+            <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                <p style="margin: 0;"><strong>{{ message.sender.username }}:</strong> {{ message.body }}</p>
+                <span class="timestamp">{{ message.timestamp|date:"M d, g:i A" }}</span>
+            </div>
+        {% empty %}
+            <p style="color: #6c757d; text-align: center;">No messages yet. Start the conversation!</p>
+        {% endfor %}
+    </div>
+    <div class="chat-footer" style="padding: 1rem; border-top: 1px solid #ddd; background-color: #f8f9fa;">
+        <form method="post">
+            {% csrf_token %}
+            <div style="display: flex; gap: 0.5rem;">
+                <input type="text" name="body" placeholder="Type your message..." style="flex-grow: 1; padding: 0.75rem; border-radius: 20px; border: 1px solid #ccc;" autocomplete="off" autofocus>
+                <button type="submit" class="button" style="background-color: #212529; color: white;">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

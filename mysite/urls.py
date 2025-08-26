@@ -20,7 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Add this line to include all of Django's built-in login, logout, etc. URLs
+    # this includes all of Django's built-in login, logout, etc. URLs
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('timesheet.urls')),
 ]

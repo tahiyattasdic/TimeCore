@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm
 from .models import TimePunch
 
-
+#signing up with an account
 def sign_up(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -23,7 +23,7 @@ def sign_up(request):
             user.is_active = False
             user.save()
 
-            # --- Start Email Sending Logic ---
+            # email sending
             # Get the current site
             current_site = request.get_host()
             subject = 'Activate Your TimeSheet Account'
@@ -55,7 +55,7 @@ def dashboard(request):
     # Get all punches for the user, ordered by time
     punches = TimePunch.objects.filter(employee=employee).order_by('timestamp')
 
-    # --- Calculate Work Sessions ---
+    #Calculate Work Sessions
     work_sessions = []
     last_in_punch = None
     for punch in punches:
@@ -137,3 +137,32 @@ def toggle_confirmation(request, punch_id): # Renamed function
 
         punch.save()
     return redirect('dashboard')
+
+#this is for the managers/superiors
+
+@login_required
+def inbox(request):
+    # Find all users who are managers/staff
+    managers = User.objects.filter(is_staff=True)
+    return render(request, 'timesheet/inbox.html', {'managers': managers})
+
+@login_required
+def chat_view(request, recipient_id):
+    recipient = User.objects.get(pk=recipient_id)
+
+    # Handle sending a new message
+    if request.method == 'POST':
+        body = request.POST.get('body')
+        if body:
+            Message.objects.create(sender=request.user, recipient=recipient, body=body)
+            return redirect('chat', recipient_id=recipient_id)
+
+    # Get the conversation history between the two users
+    # The Q object allows for complex queries (sender=A AND recipient=B) OR (sender=B AND recipient=A)
+    from django.db.models import Q
+    messages = Message.objects.filter(
+        (Q(sender=request.user) & Q(recipient=recipient)) |
+        (Q(sender=recipient) & Q(recipient=request.user))
+    ).order_by('timestamp')
+
+    return render(request, 'timesheet/chat.html', {'recipient': recipient, 'messages': messages})
